@@ -1,7 +1,7 @@
 name: Build SmmMem Drivers
 
 on:
-  workflow_dispatch: # Дозволяє запускати збірку вручну кнопкою
+  workflow_dispatch: # Кнопка ручного запуску
 
 jobs:
   build:
@@ -14,15 +14,20 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-size: '3.x'
+        python-version: '3.x'
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
 
-    - name: Run Build Script
+    - name: Run Author Build Script
       shell: cmd
       run: |
-        build.bat
+        python Work/build.py --src
+
+    - name: Run Author Debug Build Script
+      shell: cmd
+      run: |
+        python Work/build.py --debug
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
