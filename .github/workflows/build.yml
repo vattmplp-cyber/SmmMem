@@ -1,7 +1,7 @@
 name: Build SmmMem Drivers
 
 on:
-  workflow_dispatch: # Кнопка ручного запуску
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,14 +16,18 @@ jobs:
       with:
         arch: x64
 
-    - name: Run Build Script From Its Folder
+    - name: Patch Build Flags and Run
       shell: cmd
       run: |
         cd src
+        :: Підміняємо налаштування компілятора в батнику автора, щоб вимкнути перевірку стеку
+        powershell -Command "(Get-Content build.cmd) -replace '/O1 /Oi', '/O1 /Oi /Gs999999' | Set-Content build.cmd"
+        
+        :: Запускаємо збірку
         build.cmd
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: SmmMem-Binaries
-        path: src/Work/build_debug04/*   # Збираємо точно звідти, куди вказав батник
+        path: src/Work/build_debug04/*
