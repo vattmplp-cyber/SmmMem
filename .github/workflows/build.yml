@@ -14,20 +14,16 @@ jobs:
     - name: Activate x64 VS Developer Command Prompt
       uses: ilammy/msvc-dev-cmd@v1
       with:
-        arch: x64 # Активує саме x64 оточення, яке просить скрипт
+        arch: x64
 
-    - name: Run Release Build Script
+    - name: Run Build Script From Its Folder
       shell: cmd
       run: |
-        call src\build.cmd
-
-    - name: Run Debug Build Script
-      shell: cmd
-      run: |
-        call src_dbg01\build.cmd
+        cd src
+        build.cmd
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: SmmMem-Binaries
-        path: Work/build/*
+        path: src/Work/build_debug04/*   # Збираємо точно звідти, куди вказав батник
