@@ -1,0 +1,31 @@
+name: Build SmmMem Drivers
+
+on:
+  workflow_dispatch: # Дозволяє запускати збірку вручну кнопкою
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-size: '3.x'
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Run Build Script
+      shell: cmd
+      run: |
+        build.bat
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: SmmMem-Binaries
+        path: Work/build/*
