@@ -1,7 +1,7 @@
 name: Build SmmMem Drivers
 
 on:
-  workflow_dispatch: # Кнопка ручного запуску в інтерфейсі
+  workflow_dispatch: # Кнопка ручного запуску
 
 jobs:
   build:
@@ -11,8 +11,10 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Add MSBuild and DevCmd to PATH
-      uses: microsoft/setup-msbuild@v2
+    - name: Activate x64 VS Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64 # Активує саме x64 оточення, яке просить скрипт
 
     - name: Run Release Build Script
       shell: cmd
